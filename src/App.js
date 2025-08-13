@@ -1,4 +1,4 @@
-import logo from './logo.svg';
+import logo from './images/logo_soundsnap_claro.png';
 import './App.css';
 
 function App() {
