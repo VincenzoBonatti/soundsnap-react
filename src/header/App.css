@@ -11,3 +11,67 @@ header {
 header img {
     width: 100px;
 }
+
+
+
+
+form {
+    width: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #d4cdc5;
+    height: 45%;
+    border-radius: 70px;
+    padding-right: 10px;
+    border: 1px solid black;
+}
+
+form input, 
+form input:focus {
+    border: none;
+    width: 90%;
+    background-color: #d4cdc5;
+    height: 100%;
+    border-radius: 70px;
+    padding-left: 10px;
+}
+
+form button {
+    height: 80%;
+    width: 10%;
+    background-color: #191013;
+    border-radius: 70px;
+    border: none;
+    cursor: pointer;
+}
+
+form button img {
+    max-height: 100%;
+    width: fit-content;
+}
+
+.user{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    border-radius: 100%;
+    gap: 1em;
+}
+
+.user a{
+    height: 100%;
+    width: 100%;
+    max-height: 50px;
+    max-width: 50px;
+    background-color: #d4cdc5;
+    border: 1px solid black;
+    border-radius: 100%;
+    padding: 5px;
+}
+
+header a img {
+    max-height: 100%;
+    max-width: 100%;
+}
