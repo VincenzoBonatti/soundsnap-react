@@ -1,24 +1,16 @@
-import logo from './images/logo_soundsnap_claro.png';
 import './App.css';
+import { Routes, Route } from 'react-router-dom';
+import AlbumPagina from './album/App';
+import FeedPagina from './feed/App';
+import CadastroPagina from './cadastro/App';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Routes>
+      <Route path="/" element={<FeedPagina />} />
+      <Route path="/cadastro" element={<CadastroPagina />} />
+      <Route path="/album" element={<AlbumPagina />} />
+    </Routes>
   );
 }
 
