@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import { access } from '../Access';
 
 
-async function feed(token){
+async function feed(token, obj){
   let responses = []
     for(let i = 0; i < 8; i++){
         const characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -26,45 +26,54 @@ async function feed(token){
             break;
         }
 
-        let url = `https://api.spotify.com/v1/search?query=${randomSearch}&offset=${getRandomOffset}&limit=1&type=album&market=NL`;
+        let url = `https://api.spotify.com/v1/search?query=${randomSearch}&offset=${getRandomOffset}&limit=1&type=${obj}&market=NL`;
 
         const result = fetch(url, {
             headers: {'Authorization': "Bearer " + token}
         }).then(data => {
             return data.json()
         }).then(response =>{
-            return response.albums.items[0];
+          if(obj === "artist"){
+            return response.artists.items[0];
+          } else if(obj === "album"){
+            return response.albums.items[0];  
+          }
         })
-        console.log(await result)
         responses.push(await result);
-
-    }
+        
+      }
+      console.log(responses)
     return responses;
 }
 
 
 
 function FeedPagina() {
-  const [feedData, setFeedData] = useState([]);
+  const [feedAlbum, setFeedAlbum] = useState([]);
+  const [feedArtist, setFeedArtist] = useState([]);
 
   useEffect(() => {
     async function fetchToken() {
       let token = await access();
-      const data = await feed(token);
-      setFeedData(data);
+      const artists = await feed(token, "artist");
+      const albums = await feed(token, "album");
+
+      setFeedArtist(artists);
+      setFeedAlbum(albums);
     }
     fetchToken();
   }, []);
 
   return (
     <main>
-      {feedData.length > 0 ? (
-        <pre>{feedData.map((item, index) => (
-          <div key={index}>
-            <h2>{item.name}</h2>
-            <p>{item.artists.map(artist => artist.name).join(', ')}</p>
-          </div>
-        ))}
+      {feedAlbum.length > 0 ? (
+        <pre>
+          {feedAlbum.map((item, index) => (
+            <div key={index}>
+              <h2>{item.name}</h2>
+              <p>{item.artists.map(artist => artist.name).join(', ')}</p>
+            </div>
+          ))}
         </pre>
       ) : (
         <p>Loading...</p>
