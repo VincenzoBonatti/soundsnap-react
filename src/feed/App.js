@@ -79,12 +79,14 @@ function FeedPagina() {
     <main>
       {feedAlbum ? (
         <pre>
-          <div className="feed_container">
+          <div className="feed-container">
             {feedAlbum.map(album => (
               <div className="post" key={album.id}>
                 <Link to={`/album/${album.id}`}>
                   <img src={album.images[0]?.url} alt={album.name} />
-                  <div className="descricao">
+                </Link>
+                <div className="descricao">
+                  <Link to={`/album/${album.id}`}>
                     <div className="info">
                       <h1>{album.name}</h1>
                       <div className="infos"><p>Artistas: </p>{album.artists.map(artist => artist.name).join(", ")}</div>
@@ -92,12 +94,12 @@ function FeedPagina() {
                       <div className="infos"><p>Tipo: </p>{album.album_type}</div>
                       <div className="infos"><p>Lançamento(A/M/D): </p>{album.release_date.replace(/-/g, "/")}</div>
                     </div>
-                  </div>
+                  </Link>
                   <div className="acoes">
                     <button>Curtir</button>
                     <button>Compartilhar</button>
                   </div>
-                </Link>
+                </div>
               </div>
             ))}
           </div>
