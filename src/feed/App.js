@@ -6,7 +6,7 @@ import { access } from '../Access';
 
 const token = await access();
 
-async function feed(token, obj) {
+async function feed(token, obj, limit) {
   const characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
   const randomCharacter = characters.charAt(Math.floor(Math.random() * characters.length));
   let randomSearch = '';
@@ -25,7 +25,7 @@ async function feed(token, obj) {
       break;
   }
 
-  let url = `https://api.spotify.com/v1/search?query=${randomSearch}&offset=${getRandomOffset}&limit=1&type=${obj}&market=NL`;
+  let url = `https://api.spotify.com/v1/search?query=${randomSearch}&offset=${getRandomOffset}&limit=${limit}&type=${obj}&market=NL`;
 
   const result = fetch(url, {
     headers: { 'Authorization': "Bearer " + token }
@@ -33,7 +33,7 @@ async function feed(token, obj) {
     return data.json()
   }).then(response => {
     if (obj === "artist") {
-      return response.artists.items[0];
+      return response.artists.items;
     } else if (obj === "album") {
       return response.albums.items[0];
     }
@@ -48,23 +48,24 @@ function FeedPagina() {
   const [feedArtist, setFeedArtist] = useState([]);
 
   const handleScroll = async () => {
-    const bottom = Math.ceil(window.innerHeight + window.scrollY) >= document.documentElement.scrollHeight
+    const pertoFinal = 200; 
+    const bottom = (window.innerHeight + window.scrollY) >= (document.documentElement.scrollHeight - pertoFinal);
 
     if (bottom) {
-      const albums = await feed(token, "album");
+      const albums = await feed(token, "album", 1);
       setFeedAlbum(oldArray => [...oldArray, albums]);
     }
   };
 
   async function fetchToken() {
-    const artists = await feed(token, "artist");
-    const albums = await feed(token, "album");
+    const artists = await feed(token, "artist", 5);
+    const albums = await feed(token, "album", 1);
     if (!artists || !albums) {
       console.error("Failed to fetch artists or albums");
       return;
     }
-    console.log(albums);
-    setFeedArtist(oldArray => [...oldArray, artists]);
+    console.log(artists);
+    setFeedArtist(artists);
     setFeedAlbum(oldArray => [...oldArray, albums]);
   }
 
@@ -77,33 +78,46 @@ function FeedPagina() {
 
   return (
     <main>
+      {feedArtist ? (
+        <div className="feed-artist">
+          {feedArtist.map(artist => (
+            <a href={artist.external_urls.spotify} target="_blank" rel="noopener noreferrer" key={artist.id}>
+              <div className="artista" >
+                <img src={artist.images[0]?.url} alt={artist.name} />
+                <p>{artist.name}</p>
+              </div>
+            </a>
+          ))}
+        </div>
+      ) : (
+        <p>Loading...</p>
+      )}
+
       {feedAlbum ? (
-        <pre>
-          <div className="feed-container">
-            {feedAlbum.map(album => (
-              <div className="post" key={album.id}>
+        <div className="feed-container">
+          {feedAlbum.map(album => (
+            <div className="post" key={album.id}>
+              <Link to={`/album/${album.id}`}>
+                <img src={album.images[0]?.url} alt={album.name} />
+              </Link>
+              <div className="descricao">
                 <Link to={`/album/${album.id}`}>
-                  <img src={album.images[0]?.url} alt={album.name} />
-                </Link>
-                <div className="descricao">
-                  <Link to={`/album/${album.id}`}>
-                    <div className="info">
-                      <h1>{album.name}</h1>
-                      <div className="infos"><p>Artistas: </p>{album.artists.map(artist => artist.name).join(", ")}</div>
-                      <div className="infos"><p>Musicas: </p>{album.total_tracks}</div>
-                      <div className="infos"><p>Tipo: </p>{album.album_type}</div>
-                      <div className="infos"><p>Lançamento(A/M/D): </p>{album.release_date.replace(/-/g, "/")}</div>
-                    </div>
-                  </Link>
-                  <div className="acoes">
-                    <button>Curtir</button>
-                    <button>Compartilhar</button>
+                  <div className="info">
+                    <h1>{album.name}</h1>
+                    <div className="infos"><p>Artistas: </p>{album.artists.map(artist => artist.name).join(", ")}</div>
+                    <div className="infos"><p>Musicas: </p>{album.total_tracks}</div>
+                    <div className="infos"><p>Tipo: </p>{album.album_type}</div>
+                    <div className="infos"><p>Lançamento(A/M/D): </p>{album.release_date.replace(/-/g, "/")}</div>
                   </div>
+                </Link>
+                <div className="acoes">
+                  <button>Curtir</button>
+                  <button>Compartilhar</button>
                 </div>
               </div>
-            ))}
-          </div>
-        </pre>
+            </div>
+          ))}
+        </div>
       ) : (
         <p>Loading...</p>
       )}
