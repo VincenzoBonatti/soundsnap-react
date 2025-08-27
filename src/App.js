@@ -9,7 +9,7 @@ function App() {
     <Routes>
       <Route path="/" element={<FeedPagina />} />
       <Route path="/cadastro" element={<CadastroPagina />} />
-      <Route path="/album" element={<AlbumPagina />} />
+      <Route path="/album/:id" element={<AlbumPagina />} />
     </Routes>
   );
 }

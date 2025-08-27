@@ -64,7 +64,7 @@ function FeedPagina() {
       console.error("Failed to fetch artists or albums");
       return;
     }
-    console.log(artists);
+
     setFeedArtist(artists);
     setFeedAlbum(oldArray => [...oldArray, albums]);
   }
