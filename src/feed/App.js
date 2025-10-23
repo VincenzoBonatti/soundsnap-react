@@ -84,7 +84,7 @@ function FeedPagina() {
             <a href={artist.external_urls.spotify} target="_blank" rel="noopener noreferrer" key={artist.id}>
               <div className="artista" >
                 <img src={artist.images[0]?.url} alt={artist.name} />
-                <p>{artist.name}</p>
+                <p>{artist.name?.length > 25 ? artist.name.slice(0, 25) + '...' : artist.name}</p>
               </div>
             </a>
           ))}
@@ -103,8 +103,8 @@ function FeedPagina() {
               <div className="descricao">
                 <Link to={`/album/${album.id}`}>
                   <div className="info">
-                    <h1>{album.name}</h1>
-                    <div className="infos"><p>Artistas: </p>{album.artists.map(artist => artist.name).join(", ")}</div>
+                    <h1>{album.name?.length > 25 ? album.name.slice(0, 25) + '...' : album.name}</h1>
+                    <div className="infos"><p>Artistas: </p>{album.artists.map(a => a.name?.length > 25 ? a.name.slice(0, 25) + '...' : a.name).join(", ")}</div>
                     <div className="infos"><p>Musicas: </p>{album.total_tracks}</div>
                     <div className="infos"><p>Tipo: </p>{album.album_type}</div>
                     <div className="infos"><p>Lançamento(A/M/D): </p>{album.release_date.replace(/-/g, "/")}</div>
