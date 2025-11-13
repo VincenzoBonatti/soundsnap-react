@@ -11,7 +11,7 @@ function Header() {
       <Link to="/">
         <img src={logo} alt="" />
       </Link>
-      <form action="" method="get">
+      <form action="/" method="get">
         <input type="text" name="search" id="input_pesq" placeholder="O quê você quer ouvir hoje?"></input>
         <button>
             <img src={logo2} alt=""/>

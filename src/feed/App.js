@@ -1,7 +1,7 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import './App.css';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { access } from '../Access';
 
 const token = await access();
@@ -41,23 +41,40 @@ async function feed(token, obj, limit) {
   return result;
 }
 
+function pesquisa(query, token) {
+  let url = `https://api.spotify.com/v1/search?query=${encodeURIComponent(query)}&type=album&market=NL&limit=20`;
+  const result = fetch(url, {
+    headers: { 'Authorization': "Bearer " + token }
+  }).then(data => {
+    return data.json()
+  }).then(response => {
+    return response.albums.items;
+  })
+  return result;
+}
 
 
 function FeedPagina() {
   const [feedAlbum, setFeedAlbum] = useState([]);
   const [feedArtist, setFeedArtist] = useState([]);
 
+  const location = useLocation();
+  const params = new URLSearchParams(location.search);
+  const searchQuery = params.get('search') || "";
+
   const handleScroll = async () => {
     const pertoFinal = 200; 
     const bottom = (window.innerHeight + window.scrollY) >= (document.documentElement.scrollHeight - pertoFinal);
 
-    if (bottom) {
+    if (bottom && searchQuery === "") {
       const albums = await feed(token, "album", 1);
       setFeedAlbum(oldArray => [...oldArray, albums]);
     }
   };
 
   async function fetchToken() {
+
+    
     const artists = await feed(token, "artist", 5);
     const albums = await feed(token, "album", 1);
     if (!artists || !albums) {

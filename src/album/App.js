@@ -2,6 +2,7 @@ import React from 'react';
 import './App.css';
 import { access } from '../Access';
 import { useParams } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 
 const token = await access();
@@ -10,6 +11,7 @@ const token = await access();
 function AlbumPagina() {
   const [infoAlbum, setInfoAlbum] = useState();
   const [infoArtsta, setInfoArtsta] = useState([]);
+  const { pathname } = useLocation();
   const { id } = useParams();
 
   function fetchInfos() {
@@ -35,6 +37,10 @@ function AlbumPagina() {
       })
     }
   }
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
 
   useEffect(() => {
     fetchInfos();
@@ -86,7 +92,7 @@ function AlbumPagina() {
               <div className="artistas-faixa">
                 {track.artists.map((artist, i) => (
                   <>
-                    <a href={artist.external_urls.spotify} key={artist.id}>
+                    <a href={artist.external_urls.spotify} key={artist.id} target="_blank" rel="noopener noreferrer">
                       {artist.name}
                     </a>
                     {i < track.artists.length - 1 ? "\u00A0•\u00A0" : ''}
