@@ -6,9 +6,23 @@ import './App.css';
 import { Link } from 'react-router-dom';
 
 function Header() {
+  const handleHomeClick = (e) => {
+    if (window.location.pathname === '/') {
+      window.location.replace('/');
+     
+    }
+  };
+
+  const handleCadastroClick = (e) => {
+    if (window.location.pathname === '/cadastro') {
+      e.preventDefault();
+      window.location.reload();
+    }
+  };
+
   return (
     <header>
-      <Link to="/">
+      <Link to="/" onClick={handleHomeClick}>
         <img src={logo} alt="" />
       </Link>
       <form action="/" method="get">
@@ -18,7 +32,7 @@ function Header() {
         </button>
       </form>
       <div className="user">
-        <Link to={"/cadastro"}>
+        <Link to={"/cadastro"} onClick={handleCadastroClick}>
           <img src={userIcon} alt="User Icon" />
         </Link>
       </div>

@@ -74,7 +74,12 @@ function FeedPagina() {
 
   async function fetchToken() {
 
-    
+    if (searchQuery !== "") {
+      const searchResults = await pesquisa(searchQuery, token);
+      setFeedAlbum(searchResults);
+      return;
+    }
+
     const artists = await feed(token, "artist", 5);
     const albums = await feed(token, "album", 1);
     if (!artists || !albums) {
