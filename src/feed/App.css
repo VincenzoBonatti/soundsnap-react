@@ -122,3 +122,27 @@ h1, .infos p{
     }
 }
 
+@media screen and (max-width: 768px) {
+    .feed-container{
+        width: 80%;
+    }
+
+    .post{
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .descricao{
+        width: 90% !important;
+        max-width: 100% !important;
+    }
+
+    .acoes{
+        flex-direction: row;
+    }
+
+    .feed-artist {
+        display: none;
+    }
+    
+}

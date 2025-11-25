@@ -22,12 +22,12 @@ function Header() {
 
   return (
     <header>
-      <Link to="/" onClick={handleHomeClick}>
+      <Link to="/" onClick={handleHomeClick} aria-label='página inicial'>
         <img src={logo} alt="" />
       </Link>
       <form action="/" method="get">
         <input type="text" name="search" id="input_pesq" placeholder="O quê você quer ouvir hoje?"></input>
-        <button>
+        <button aria-label='pesquisar'>
             <img src={logo2} alt=""/>
         </button>
       </form>

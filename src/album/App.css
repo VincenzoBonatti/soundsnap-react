@@ -152,3 +152,31 @@ h1{
         transition: .2s;
     }
 }
+
+@media screen and (max-width: 768px) {
+    
+    .album-infos{
+        width: 90%;
+        font-size: 1.1em;
+    }
+
+    .album-container {
+        width: 100%;
+        border: none;
+        border-radius: 0;
+        padding: 1em 0 2em 0;
+    }
+
+    .faixa{
+        width: 90%;
+    }
+
+    .album-informacoes {
+        flex-direction: column;
+        align-items: center;
+
+        & a {
+            width: 90%;
+        }
+    }
+}

@@ -1,6 +1,121 @@
-.teste{
-    background-color: black;
-    color: white;
-    height: 100vh;
-    width: 100vw;
+.container-cadastro {
+  display: flex;
+  justify-content: space-between;
+  width: 60%;
+  background-color: #191013;
+  color: #d4cdc5;
+  padding: 2em 2em 2em 2em;
+  gap: 1em;
+  border-radius: 30px;
+}
+
+.login{
+    background-color: #d4cdc5;
+    color: #191013;
+    width: 50%;    
+    border-radius: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5em;
+    padding-top: 1em;
+    padding-bottom: 1em;
+    gap: .5em;
+
+    & form{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1em;
+        width: 80%;
+
+        & div{
+            width: 100%;
+        }
+        
+        & input {
+            width: 100%;
+            height: 40px;
+            border-radius: 20px;
+            padding-left: 10px;
+            background-color: #191013;
+            color: #d4cdc5;
+            border: none;
+        }
+
+        & button {
+            width: 50%;
+            height: 40px;
+            border-radius: 20px;
+            border: none;
+            background-color: #191013;
+            color: #d4cdc5;
+            font-size: 1em;
+            cursor: pointer;
+        }   
+    }
+}
+
+.cadastro{
+    width: 50%;
+    height: 100%;    
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 1.5em;
+    gap: .5em;
+
+    & form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1em;
+        width: 80%;
+        height: 60%;
+
+        & div{
+            width: 100%;
+        }
+        
+        & input {
+            width: 100%;
+            height: 40px;
+            border-radius: 20px;
+            border: 1px solid #191013;
+            padding-left: 10px;
+            background-color: #d4cdc5;
+        }
+
+        & button {
+            width: 50%;
+            height: 40px;
+            border-radius: 20px;
+            border: none;
+            background-color: #d4cdc5;
+            color: #191013;
+            font-size: 1em;
+            cursor: pointer;
+        }   
+    }
+}
+
+
+@media (max-width: 768px) {
+  .container-cadastro {
+    flex-direction: column-reverse;
+    width: 90%;
+    border-radius: 0%;
+    width: 100%;
+    padding: 1em 0em 1em 0em;
+    align-items: center;
+  }
+
+  .cadastro, .login {
+    width: 100%;
+  }
+
+  .login{
+    width: 90%;
+  }
 }

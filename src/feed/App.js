@@ -25,6 +25,7 @@ async function feed(token, obj, limit) {
       break;
   }
 
+  console.log(randomSearch, getRandomOffset);
   let url = `https://api.spotify.com/v1/search?query=${randomSearch}&offset=${getRandomOffset}&limit=${limit}&type=${obj}&market=NL`;
 
   const result = fetch(url, {
