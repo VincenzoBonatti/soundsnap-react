@@ -18,15 +18,45 @@ function CadastroPagina() {
     setTelefone(formatted);
   };
 
+  const cadastro = document.getElementById('cadastro');
+  cadastro?.addEventListener('submit', function (e) {
+    e.preventDefault();
+
+    const formData = new FormData(cadastro);
+    const form = Object.fromEntries(formData.entries());
+
+    fetch("https://sound-snap-api-node.onrender.com/api/auth/register", {
+      method: "POST",
+      mode: "cors",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(form)
+    })
+      .then(response => response.json())
+      .then(data => {
+        console.log("Success:", data);
+        console.log("Cadastro realizado com sucesso!");
+        cadastro.reset();
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+        console.log("Erro ao realizar cadastro. Tente novamente.");
+      });
+
+  });
+
+
+
   return (
     <main>
       <div className="container-cadastro">
         <div className="cadastro">
           <h2>Cadastro</h2>
-          <form action="" method="post">
+          <form action="" id='cadastro'>
             <div>
               <p>Nome de Usuário</p>
-              <input type="text" name="Nome completo" required />
+              <input type="text" name="name" required />
             </div>
             <div>
               <p>Email</p>
@@ -36,7 +66,7 @@ function CadastroPagina() {
               <p>Telefone</p>
               <input
                 type="tel"
-                name="Número de telefone"
+                name="phone"
                 inputMode="numeric"
                 value={telefone}
                 onChange={handleTelefoneChange}
@@ -46,7 +76,7 @@ function CadastroPagina() {
             </div>
             <div>
               <p>Senha</p>
-              <input type="password" name="senha" required />
+              <input type="password" name="password" required />
             </div>
             <button type="submit">Cadastrar</button>
           </form>
@@ -60,7 +90,7 @@ function CadastroPagina() {
             </div>
             <div>
               <p>Senha</p>
-              <input type="password" name="senha" required />
+              <input type="password" name="password" required />
             </div>
             <button type="submit">Entrar</button>
           </form>

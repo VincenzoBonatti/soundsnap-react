@@ -63,12 +63,24 @@ function FeedPagina() {
   const params = new URLSearchParams(location.search);
   const searchQuery = params.get('search') || "";
 
+
+  const activeRef = React.useRef(true);
+  useEffect(() => {
+    return () => {
+      activeRef.current = false;
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, [location]);
+
   const handleScroll = async () => {
-    const pertoFinal = 200; 
+    if (!activeRef.current) return;
+
+    const pertoFinal = 200;
     const bottom = (window.innerHeight + window.scrollY) >= (document.documentElement.scrollHeight - pertoFinal);
 
     if (bottom && searchQuery === "") {
       const albums = await feed(token, "album", 1);
+      if (!activeRef.current) return;
       setFeedAlbum(oldArray => [...oldArray, albums]);
     }
   };
