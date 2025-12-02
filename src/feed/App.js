@@ -1,8 +1,10 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import './App.css';
+import "../like/App.js";
 import { Link, useLocation } from 'react-router-dom';
 import { access } from '../Access';
+import LikeFav from '../like/App.js';
 
 const token = await access();
 
@@ -24,8 +26,6 @@ async function feed(token, obj, limit) {
       randomSearch = '%25' + randomCharacter;
       break;
   }
-
-  console.log(randomSearch, getRandomOffset);
   let url = `https://api.spotify.com/v1/search?query=${randomSearch}&offset=${getRandomOffset}&limit=${limit}&type=${obj}&market=NL`;
 
   const result = fetch(url, {
@@ -145,10 +145,7 @@ function FeedPagina() {
                     <div className="infos"><p>Lançamento(A/M/D): </p>{album.release_date.replace(/-/g, "/")}</div>
                   </div>
                 </Link>
-                <div className="acoes">
-                  <button>Curtir</button>
-                  <button>Compartilhar</button>
-                </div>
+                <LikeFav />
               </div>
             </div>
           ))}

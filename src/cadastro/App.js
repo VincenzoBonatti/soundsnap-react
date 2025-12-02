@@ -1,8 +1,10 @@
 import React from 'react';
 import './App.css';
+import { useState } from "react";
 
 function CadastroPagina() {
   const [telefone, setTelefone] = React.useState('');
+  const [loading, setLoading] = useState(false);
 
   const formatTelefone = (value) => {
     const digits = value.replace(/\D/g, '').slice(0, 11);
@@ -18,33 +20,84 @@ function CadastroPagina() {
     setTelefone(formatted);
   };
 
-  const cadastro = document.getElementById('cadastro');
-  cadastro?.addEventListener('submit', function (e) {
+  function handleLogin(e) {
     e.preventDefault();
+    if (loading) return;
+    setLoading(true);
+    console.log(loading)
 
-    const formData = new FormData(cadastro);
+    const formData = new FormData(document.getElementById('login'));
+    const form = Object.fromEntries(formData.entries());
+
+    fetch("https://sound-snap-api-node.onrender.com/api/auth/login", {
+      method: "POST",
+      body: JSON.stringify(form),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success === false) {
+          alert(data.message);
+          setLoading(false);
+          return;
+        } else if (data.success === true) {
+          alert("Login realizado com sucesso!");
+          console.log("Success:", data);
+          console.log("Login realizado com sucesso!");
+          localStorage.setItem('token', data.data.accessToken);
+          window.location.replace('/');
+          setLoading(false);
+        }
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+        console.log("Erro ao realizar login. Tente novamente.");
+        setLoading(false);
+      });
+    
+  };
+
+  function handleCadastro(e) {
+    e.preventDefault();
+    if (loading) return;
+    setLoading(true);
+    
+
+    const formData = new FormData(document.getElementById('cadastro'));
     const form = Object.fromEntries(formData.entries());
 
     fetch("https://sound-snap-api-node.onrender.com/api/auth/register", {
       method: "POST",
-      mode: "cors",
+      body: JSON.stringify(form),
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify(form)
+
     })
       .then(response => response.json())
       .then(data => {
-        console.log("Success:", data);
-        console.log("Cadastro realizado com sucesso!");
-        cadastro.reset();
+        if (data.success === false) {
+          alert(data.message);
+          setLoading(false);
+          return;
+        } else if (data.success === true) {
+          alert("Cadastro realizado com sucesso!");
+          console.log("Success:", data);
+          console.log("Cadastro realizado com sucesso!");
+          localStorage.setItem('token', data.data.accessToken);
+          window.location.replace('/');
+          setLoading(false);
+        }
+
       })
       .catch((error) => {
         console.error("Error:", error);
         console.log("Erro ao realizar cadastro. Tente novamente.");
+        setLoading(false);
       });
-
-  });
+  };
 
 
 
@@ -53,7 +106,7 @@ function CadastroPagina() {
       <div className="container-cadastro">
         <div className="cadastro">
           <h2>Cadastro</h2>
-          <form action="" id='cadastro'>
+          <form id='cadastro' onSubmit={handleCadastro}>
             <div>
               <p>Nome de Usuário</p>
               <input type="text" name="name" required />
@@ -78,12 +131,14 @@ function CadastroPagina() {
               <p>Senha</p>
               <input type="password" name="password" required />
             </div>
-            <button type="submit">Cadastrar</button>
+            <button type="submit" disabled={loading}>
+              {loading ? 'Carregando...' : 'Cadastrar'}
+            </button>
           </form>
         </div>
         <div className="login">
           <h2>Login</h2>
-          <form action="" method="post">
+          <form id='login' onSubmit={handleLogin}>
             <div>
               <p>Email</p>
               <input type="email" name="email" required />
@@ -92,7 +147,10 @@ function CadastroPagina() {
               <p>Senha</p>
               <input type="password" name="password" required />
             </div>
-            <button type="submit">Entrar</button>
+            <button type="submit" disabled={loading}>
+              {loading ? 'Carregando...' : 'Entrar'}
+            </button>
+
           </form>
         </div>
       </div>

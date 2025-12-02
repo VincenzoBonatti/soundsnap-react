@@ -104,10 +104,15 @@ h1, .infos p{
 
 .acoes{
     display: flex;
-    flex-direction: column-reverse;
+    flex-direction: row;
+    flex-wrap: wrap;
     justify-content: space-between;
     gap: 1em;
-    padding: 15px 15px 15px 15px;
+
+    & a{
+        width: fit-content;
+        height: fit-content;
+    }
 }
 
 .info{
@@ -122,6 +127,8 @@ h1, .infos p{
     }
 }
 
+
+
 @media screen and (max-width: 768px) {
     .feed-container{
         width: 80%;
@@ -135,6 +142,7 @@ h1, .infos p{
     .descricao{
         width: 90% !important;
         max-width: 100% !important;
+        gap: .5em;
     }
 
     .acoes{
