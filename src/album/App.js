@@ -28,7 +28,6 @@ function AlbumPagina() {
       return data.json()
     }).then(response => {
       setInfoAlbum(response);
-      console.log(response);
       for (let i = 0; i < response.artists.length; i++) {
         fetchArtists(response.artists[i].id);
       }

@@ -179,4 +179,13 @@ h1{
             width: 90%;
         }
     }
+    h1{
+        width: 90%;
+    }
+    #nome{
+        font-size: 3em;
+    }
+    .artista-pag{
+        padding: 0 0 0 0;
+    }
 }

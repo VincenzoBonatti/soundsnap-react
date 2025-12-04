@@ -33,8 +33,8 @@ async function feed(token, obj, limit) {
     if (obj === "artist") {
       return response.artists.items;
     } else if (obj === "album") {
-      if (response.albums.items.length === 0) {
-        return null;
+      if (response.albums.items[0] === undefined) {
+        return feed(token, "album", 1);
       }
       return response.albums.items[0];
     }
@@ -131,8 +131,8 @@ function FeedPagina() {
 
       {feedAlbum ? (
         <div className="feed-container">
-          {feedAlbum.map(album => (
-            <div className="post" key={album.id}>
+          {feedAlbum.map((album, i) => (
+            <div className="post" key={i}>
               <Link to={`/album/${album.id}`}>
                 <img src={album.images[0]?.url} alt={album.name} />
               </Link>
