@@ -14,7 +14,14 @@ function AlbumPagina() {
   const { pathname } = useLocation();
   const { id } = useParams();
 
-  function fetchInfos() {
+  
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
+  useEffect(() => {
+    function fetchInfos() {
     fetch(`https://api.spotify.com/v1/albums/${id}`, {
       headers: { 'Authorization': "Bearer " + token }
     }).then(data => {
@@ -37,14 +44,8 @@ function AlbumPagina() {
       })
     }
   }
-
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [pathname]);
-
-  useEffect(() => {
     fetchInfos();
-  }, []);
+  }, [id]);
 
   return (
     <main>

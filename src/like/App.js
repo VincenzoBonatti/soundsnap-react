@@ -9,23 +9,23 @@ function LikeFav() {
     <div className="acoes">
 
       {/* LIKE */}
-      <a
+      <button
         className={`btn btn-lg btn-block btn-shared btn-like ${liked ? "liked" : ""}`}
         onClick={() => setLiked(!liked)}
       >
         ❤️
         <span className="like-text">Like</span>
 
-      </a>
+      </button>
 
       {/* FAVORITE */}
-      <a
+      <button
         className={`btn btn-lg btn-block btn-shared btn-favorite ${favorited ? "liked" : ""}`}
         onClick={() => setFavorited(!favorited)}
       >
         ⭐
         <span className="favorite-text">Favorito</span>
-      </a>
+      </button>
 
     </div>
   );

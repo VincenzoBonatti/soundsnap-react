@@ -1,8 +1,7 @@
 'use client';
-import React, { useEffect, useState } from 'react';
 import './App.css';
-import "../like/App.js";
-import { Link, useLocation } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Link, useLocation, useSearchParams } from 'react-router-dom';
 import { access } from '../Access';
 import LikeFav from '../like/App.js';
 
@@ -14,18 +13,16 @@ async function feed(token, obj, limit) {
   let randomSearch = '';
   let getRandomOffset = Math.floor(Math.random() * 999);
 
-
-  switch (Math.round(Math.random() * 2)) {
-    case 0:
-      randomSearch = randomCharacter + '%25';
-      break;
-    case 1:
-      randomSearch = '%25' + randomCharacter + '%25';
-      break;
-    case 2:
-      randomSearch = '%25' + randomCharacter;
-      break;
+  let aleatorio = Math.round(Math.random() * 2);
+  if (aleatorio === 0) {
+    randomSearch = randomCharacter + '%25';
+  } else if (aleatorio === 1) {
+    randomSearch = '%25' + randomCharacter + '%25';
+  } else if (aleatorio === 2) {
+    randomSearch = '%25' + randomCharacter;
   }
+
+
   let url = `https://api.spotify.com/v1/search?query=${randomSearch}&offset=${getRandomOffset}&limit=${limit}&type=${obj}&market=NL`;
 
   const result = fetch(url, {
@@ -36,6 +33,9 @@ async function feed(token, obj, limit) {
     if (obj === "artist") {
       return response.artists.items;
     } else if (obj === "album") {
+      if (response.albums.items.length === 0) {
+        return null;
+      }
       return response.albums.items[0];
     }
   })
@@ -60,8 +60,9 @@ function FeedPagina() {
   const [feedArtist, setFeedArtist] = useState([]);
 
   const location = useLocation();
-  const params = new URLSearchParams(location.search);
-  const searchQuery = params.get('search') || "";
+  const [searchParams] = useSearchParams();
+  const searchQuery = searchParams.get('search') || "";
+  
 
 
   const activeRef = React.useRef(true);

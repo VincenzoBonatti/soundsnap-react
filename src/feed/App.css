@@ -109,9 +109,11 @@ h1, .infos p{
     justify-content: space-between;
     gap: 1em;
 
-    & a{
+    & button{
         width: fit-content;
         height: fit-content;
+        gap: 0;
+        border-radius: 25px;
     }
 }
 
