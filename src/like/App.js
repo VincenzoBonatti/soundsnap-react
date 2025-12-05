@@ -1,12 +1,17 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, use } from "react";
 import "./App.css";
 
-function LikeFav({albumId}) {
+function LikeFav({albumId, albumFavorito}) {
   const [liked, setLiked] = useState(false);
   const [favorited, setFavorited] = useState(false);
   const userToken = localStorage.getItem('token');
 
-
+  useEffect(() => {
+    if (albumFavorito === albumId) {
+      setFavorited(true);
+    }
+  }, [albumFavorito, albumId]);
+  
   function like() {
       if (userToken !== null) {
         if (!liked) {
@@ -19,7 +24,6 @@ function LikeFav({albumId}) {
           }).then(response => response.json())
             .then(data => {
               setLiked(!liked);
-              console.log(data);
             }).catch((error) => {
               console.error("Error liking album:", error);
             });
@@ -48,7 +52,6 @@ function LikeFav({albumId}) {
             }).then(response => response.json())
               .then(data => {
                 setFavorited(!favorited);
-                console.log(data);
               }).catch((error) => {
                 console.error("Error favoriting album:", error);
               });
@@ -68,7 +71,6 @@ function LikeFav({albumId}) {
           }).then(response => response.json())
             .then(data => {
               setFavorited(!favorited);
-              console.log(data);
             }).catch((error) => {
               console.error("Error unfavoriting album:", error);
             });

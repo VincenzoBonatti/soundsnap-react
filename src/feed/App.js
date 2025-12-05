@@ -1,6 +1,6 @@
 'use client';
 import './App.css';
-import React, { useEffect, useState } from 'react';
+import React, { use, useEffect, useState } from 'react';
 import { Link, useLocation, useSearchParams } from 'react-router-dom';
 import { access } from '../Access';
 import LikeFav from '../like/App.js';
@@ -62,7 +62,29 @@ function FeedPagina() {
   const location = useLocation();
   const [searchParams] = useSearchParams();
   const searchQuery = searchParams.get('search') || "";
-  
+
+  const [albumFavorito, setAlbumFavorito] = useState();
+  const userToken = localStorage.getItem('token');
+  useEffect(() => {
+    if (userToken === null || userToken === undefined) {
+      return
+    } else if (userToken !== null && userToken !== undefined) {
+      fetch(`https://sound-snap-api-node.onrender.com/api/auth/profile`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${userToken}`
+        },
+      })
+        .then(response => response.json())
+        .then(data => {
+          setAlbumFavorito(data.data.favoriteAlbum);
+        })
+        .catch((error) => {
+          console.error("Error fetching profile:", error);
+        });
+    }
+  }, [userToken]);
 
 
   const activeRef = React.useRef(true);
@@ -146,7 +168,7 @@ function FeedPagina() {
                     <div className="infos"><p>Lançamento(A/M/D): </p>{album.release_date.replace(/-/g, "/")}</div>
                   </div>
                 </Link>
-                <LikeFav albumId={album.id}/>
+                <LikeFav albumId={album.id} albumFavorito={albumFavorito}/>
               </div>
             </div>
           ))}

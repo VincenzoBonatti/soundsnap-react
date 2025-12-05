@@ -92,6 +92,14 @@ h1{
     width: 40%;
     gap: 1em ;
     font-size: 1.2em;
+
+    & .acoes{
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        align-items: center;
+        gap: 1em;
+    }
 }
 
 .album-infos div{
@@ -158,10 +166,14 @@ h1{
     .album-infos{
         width: 90%;
         font-size: 1.1em;
+
+        & .acoes{
+            justify-content: space-between;
+        }
     }
 
     .album-container {
-        width: 100%;
+        width: 100%;;
         border: none;
         border-radius: 0;
         padding: 1em 0 2em 0;
@@ -187,5 +199,8 @@ h1{
     }
     .artista-pag{
         padding: 0 0 0 0;
+    }
+    .tracklist h1{
+        width: 100%;
     }
 }

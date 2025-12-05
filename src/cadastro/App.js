@@ -24,7 +24,7 @@ function CadastroPagina() {
     e.preventDefault();
     if (loading) return;
     setLoading(true);
-    console.log(loading)
+  
 
     const formData = new FormData(document.getElementById('login'));
     const form = Object.fromEntries(formData.entries());
@@ -44,8 +44,6 @@ function CadastroPagina() {
           return;
         } else if (data.success === true) {
           alert("Login realizado com sucesso!");
-          console.log("Success:", data);
-          console.log("Login realizado com sucesso!");
           localStorage.setItem('token', data.data.accessToken);
           window.location.replace('/');
           setLoading(false);
@@ -84,8 +82,6 @@ function CadastroPagina() {
           return;
         } else if (data.success === true) {
           alert("Cadastro realizado com sucesso!");
-          console.log("Success:", data);
-          console.log("Cadastro realizado com sucesso!");
           localStorage.setItem('token', data.data.accessToken);
           window.location.replace('/');
           setLoading(false);

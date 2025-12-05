@@ -4,6 +4,7 @@ import { access } from '../Access';
 import { useParams } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+import LikeFav from '../like/App.js';
 
 const token = await access();
 
@@ -14,7 +15,28 @@ function AlbumPagina() {
   const { pathname } = useLocation();
   const { id } = useParams();
 
-  
+  const [albumFavorito, setAlbumFavorito] = useState();
+  const userToken = localStorage.getItem('token');
+  useEffect(() => {
+    if (userToken === null || userToken === undefined) {
+      return
+    } else if (userToken !== null && userToken !== undefined) {
+      fetch(`https://sound-snap-api-node.onrender.com/api/auth/profile`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${userToken}`
+        },
+      })
+        .then(response => response.json())
+        .then(data => {
+          setAlbumFavorito(data.data.favoriteAlbum);
+        })
+        .catch((error) => {
+          console.error("Error fetching profile:", error);
+        });
+    }
+  }, [userToken]);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -22,27 +44,27 @@ function AlbumPagina() {
 
   useEffect(() => {
     function fetchInfos() {
-    fetch(`https://api.spotify.com/v1/albums/${id}`, {
-      headers: { 'Authorization': "Bearer " + token }
-    }).then(data => {
-      return data.json()
-    }).then(response => {
-      setInfoAlbum(response);
-      for (let i = 0; i < response.artists.length; i++) {
-        fetchArtists(response.artists[i].id);
-      }
-    })
-
-    async function fetchArtists(id) {
-      await fetch(`https://api.spotify.com/v1/artists/${id}`, {
+      fetch(`https://api.spotify.com/v1/albums/${id}`, {
         headers: { 'Authorization': "Bearer " + token }
       }).then(data => {
         return data.json()
       }).then(response => {
-        setInfoArtsta(oldArray => [...oldArray, response]);
+        setInfoAlbum(response);
+        for (let i = 0; i < response.artists.length; i++) {
+          fetchArtists(response.artists[i].id);
+        }
       })
+
+      async function fetchArtists(id) {
+        await fetch(`https://api.spotify.com/v1/artists/${id}`, {
+          headers: { 'Authorization': "Bearer " + token }
+        }).then(data => {
+          return data.json()
+        }).then(response => {
+          setInfoArtsta(oldArray => [...oldArray, response]);
+        })
+      }
     }
-  }
     fetchInfos();
   }, [id]);
 
@@ -66,6 +88,9 @@ function AlbumPagina() {
                 <p>Nota de popularidade: <strong>{infoAlbum.popularity}</strong></p>
                 <p>Data de lançamento(A/M/D): <strong>{infoAlbum.release_date.replace(/-/g, "/")}</strong></p>
               </div>
+            }
+            {infoAlbum &&
+              <LikeFav albumId={infoAlbum.id} albumFavorito={albumFavorito}/>
             }
           </div>
         </div>
