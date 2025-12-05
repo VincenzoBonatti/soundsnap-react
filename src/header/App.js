@@ -68,7 +68,7 @@ function Header() {
       <div className="user">
         {userName &&
           <div>
-            <Link to={`/profile/${localStorage.getItem('token')}`}>{userName?.length > 8 ? userName.slice(0, 8) + '.' : userName}</Link>
+            <Link to={`/profile`}>{userName?.length > 8 ? userName.slice(0, 8) + '.' : userName}</Link>
             <button onClick={handleSair}>Sair</button>
           </div>
         }

@@ -15,7 +15,7 @@ function App() {
         <Route path="/" element={<FeedPagina />} />
         <Route path="/cadastro" element={<CadastroPagina />} />
         <Route path="/album/:id" element={<AlbumPagina />} />
-        <Route path="/profile/:id" element={<ProfilePage />} />
+        <Route path="/profile" element={<ProfilePage />} />
       </Routes>
     </BrowserRouter>
   );

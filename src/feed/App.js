@@ -146,7 +146,7 @@ function FeedPagina() {
                     <div className="infos"><p>Lançamento(A/M/D): </p>{album.release_date.replace(/-/g, "/")}</div>
                   </div>
                 </Link>
-                <LikeFav />
+                <LikeFav albumId={album.id}/>
               </div>
             </div>
           ))}
